@@ -1,0 +1,5 @@
+{
+  "project": "SellerSaathi",
+  "stack": ["Next.js 15", "TypeScript", "Tailwind v4", "shadcn/ui", "Supabase", "DeepSeek", "Razorpay"],
+  "formatOnSave": true
+}

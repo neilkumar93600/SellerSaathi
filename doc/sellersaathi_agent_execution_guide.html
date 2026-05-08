@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SellerSaathi Agent Execution Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    :root {
+      --bg-base: #050505;
+      --bg-surface: rgba(24, 24, 27, 0.65);
+      --bg-surface-hover: rgba(39, 39, 42, 0.8);
+      --border-dim: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(255, 255, 255, 0.2);
+      --text-high: #FAFAFA;
+      --text-med: #A1A1AA;
+      --text-low: #52525B;
+      --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --accent-cyan: #22d3ee;
+      --accent-emerald: #34d399;
+      --accent-violet: #a78bfa;
+      --accent-amber: #fbbf24;
+      --accent-rose: #fb7185;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-high);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      padding: 4rem 1.5rem;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 32px 32px;
+      background-position: center top;
+    }
+
+    /* Background Ambient Glow */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100vw;
+      height: 60vh;
+      background: radial-gradient(ellipse at top, rgba(34, 211, 238, 0.06) 0%, transparent 60%);
+      filter: blur(80px);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .w {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-container {
+      text-align: center;
+      margin-bottom: 5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .main-title {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 700;
+      background: linear-gradient(180deg, #FFFFFF 0%, #A1A1AA 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .section-head {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.5rem 1.25rem;
+      border: 1px solid rgba(34, 211, 238, 0.2);
+      border-radius: 999px;
+      background: rgba(34, 211, 238, 0.05);
+    }
+
+    .step-row {
+      display: flex;
+      gap: 2rem;
+      position: relative;
+    }
+
+    .step-line {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+      width: 32px;
+    }
+
+    .step-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      flex-shrink: 0;
+      background: var(--bg-base);
+      border: 1px solid var(--border-glow);
+      color: var(--text-med);
+      z-index: 2;
+      transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+      box-shadow: 0 0 0 4px var(--bg-base);
+    }
+
+    .step-row:hover .step-circle {
+      color: var(--bg-base);
+      background: var(--text-high);
+      border-color: var(--text-high);
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.15), 0 0 0 4px var(--bg-base);
+    }
+
+    /* Step Accents */
+    .step-row:nth-child(1):hover .step-circle {
+      background: var(--accent-emerald);
+      border-color: var(--accent-emerald);
+      box-shadow: 0 0 20px rgba(52, 211, 153, 0.25), 0 0 0 4px var(--bg-base);
+    }
+
+    .step-row:nth-child(2):hover .step-circle {
+      background: var(--accent-cyan);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 20px rgba(34, 211, 238, 0.25), 0 0 0 4px var(--bg-base);
+    }
+
+    .step-row:nth-child(3):hover .step-circle {
+      background: var(--accent-amber);
+      border-color: var(--accent-amber);
+      box-shadow: 0 0 20px rgba(251, 191, 36, 0.25), 0 0 0 4px var(--bg-base);
+    }
+
+    .step-row:nth-child(4):hover .step-circle {
+      background: var(--accent-violet);
+      border-color: var(--accent-violet);
+      box-shadow: 0 0 20px rgba(167, 139, 250, 0.25), 0 0 0 4px var(--bg-base);
+    }
+
+    .step-row:nth-child(5):hover .step-circle {
+      background: var(--accent-rose);
+      border-color: var(--accent-rose);
+      box-shadow: 0 0 20px rgba(251, 113, 133, 0.25), 0 0 0 4px var(--bg-base);
+    }
+
+    .step-row:nth-child(6):hover .step-circle {
+      background: var(--accent-amber);
+      border-color: var(--accent-amber);
+      box-shadow: 0 0 20px rgba(251, 191, 36, 0.25), 0 0 0 4px var(--bg-base);
+    }
+
+    .step-row:nth-child(7):hover .step-circle {
+      background: var(--accent-emerald);
+      border-color: var(--accent-emerald);
+      box-shadow: 0 0 20px rgba(52, 211, 153, 0.25), 0 0 0 4px var(--bg-base);
+    }
+
+    .step-connector {
+      width: 1px;
+      flex: 1;
+      min-height: 40px;
+      background: linear-gradient(to bottom, var(--border-glow) 0%, transparent 100%);
+      margin: 8px 0;
+    }
+
+    .step-row:last-child .step-connector {
+      display: none;
+    }
+
+    .step-body {
+      flex: 1;
+      padding-bottom: 4rem;
+    }
+
+    .step-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-dim);
+      border-radius: 12px;
+      padding: 2rem;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+    }
+
+    .step-card:hover {
+      border-color: var(--border-glow);
+      background: var(--bg-surface-hover);
+    }
+
+    .step-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .step-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-high);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    .step-file {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-med);
+      background: rgba(0, 0, 0, 0.4);
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-dim);
+    }
+
+    .skills-row {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+
+    .skill-pill {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+      cursor: default;
+    }
+
+    .sk-green {
+      background: rgba(52, 211, 153, 0.1);
+      color: var(--accent-emerald);
+      border-color: rgba(52, 211, 153, 0.2);
+    }
+
+    .sk-blue {
+      background: rgba(34, 211, 238, 0.1);
+      color: var(--accent-cyan);
+      border-color: rgba(34, 211, 238, 0.2);
+    }
+
+    .sk-purple {
+      background: rgba(167, 139, 250, 0.1);
+      color: var(--accent-violet);
+      border-color: rgba(167, 139, 250, 0.2);
+    }
+
+    .sk-amber {
+      background: rgba(251, 191, 36, 0.1);
+      color: var(--accent-amber);
+      border-color: rgba(251, 191, 36, 0.2);
+    }
+
+    .sk-pink {
+      background: rgba(251, 113, 133, 0.1);
+      color: var(--accent-rose);
+      border-color: rgba(251, 113, 133, 0.2);
+    }
+
+    .prompt-box {
+      background: #09090B;
+      border: 1px solid var(--border-dim);
+      border-radius: 8px;
+      padding: 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #D4D4D8;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      position: relative;
+      transition: border-color 0.2s ease;
+    }
+
+    .prompt-box:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-dim);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-med);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .copy-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-high);
+      border-color: var(--border-glow);
+    }
+
+    .copy-btn:active {
+      transform: scale(0.96);
+    }
+
+    .copy-btn:focus-visible {
+      outline: 2px solid var(--accent-cyan);
+      outline-offset: 2px;
+    }
+
+    .copy-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    .parallel-badge {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      background: rgba(167, 139, 250, 0.1);
+      color: var(--accent-violet);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      margin-left: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+      border: 1px solid rgba(167, 139, 250, 0.3);
+      vertical-align: middle;
+    }
+
+    .depends-note {
+      font-size: 0.9rem;
+      color: var(--text-med);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .depends-note::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 16px;
+      background: var(--accent-cyan);
+      border-radius: 2px;
+    }
+
+    .prompt-divider {
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-high);
+      margin: 2.5rem 0 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .prompt-divider::after {
+      content: '';
+      height: 1px;
+      background: var(--border-dim);
+      flex: 1;
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .step-row {
+      animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    }
+
+    .step-row:nth-child(1) {
+      animation-delay: 0.05s;
+    }
+
+    .step-row:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+
+    .step-row:nth-child(3) {
+      animation-delay: 0.15s;
+    }
+
+    .step-row:nth-child(4) {
+      animation-delay: 0.2s;
+    }
+
+    .step-row:nth-child(5) {
+      animation-delay: 0.25s;
+    }
+
+    .step-row:nth-child(6) {
+      animation-delay: 0.3s;
+    }
+
+    .step-row:nth-child(7) {
+      animation-delay: 0.35s;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-base);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="w">
+    <div class="header-container">
+      <h1 class="main-title">Agent Execution Guide</h1>
+      <div class="section-head">Execution Pipeline — Run Top To Bottom</div>
+    </div>
+
+    <div class="step-row">
+      <div class="step-line">
+        <div class="step-circle">1</div>
+        <div class="step-connector"></div>
+      </div>
+      <div class="step-body">
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-title">AGENT_DB — Database & Schema</span>
+            <span class="step-file">agents/AGENT_DB.md</span>
+          </div>
+          <div class="depends-note">Start here. Everything depends on the schema and TypeScript types.</div>
+          <div class="skills-row">
+            <span class="skill-pill sk-green">file-reading</span>
+            <span class="skill-pill sk-amber">pdf-reading (if needed)</span>
+          </div>
+          <div class="prompt-box" id="p1">You are the DB agent for SellerSaathi.
+
+            STEP 1 — Scan your available skills:
+            List all SKILL.md files you have access to, read file-reading/SKILL.md and any other relevant skills before
+            writing any code.
+
+            STEP 2 — Read these files completely:
+            - agents/AGENT_DB.md
+            - ARCHITECTURE.md
+
+            STEP 3 — Create ALL files listed in your "Files You Own" section.
+            Run migrations in strict order 001 → 013.
+
+            STEP 4 — Deliver:
+            - All 13 SQL migration files in supabase/migrations/
+            - types/database.types.ts with full TypeScript types matching the schema
+
+            Rules:
+            - Follow the exact schema in AGENT_DB.md. No deviations.
+            - Do NOT create any file outside your ownership list.
+            - Every table must have RLS enabled.
+            - All functions must be SECURITY DEFINER.
+            <button class="copy-btn" onclick="copy('p1',this)">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+              </svg>
+
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-row">
+      <div class="step-line">
+        <div class="step-circle">2</div>
+        <div class="step-connector"></div>
+      </div>
+      <div class="step-body">
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-title">AGENT_FRONTEND_LIB — Hooks, Stores, Types, i18n</span>
+            <span class="step-file">agents/AGENT_FRONTEND_LIB.md</span>
+          </div>
+          <div class="depends-note">Needs DB types first. Components and Pages depend on this.</div>
+          <div class="skills-row">
+            <span class="skill-pill sk-green">file-reading</span>
+            <span class="skill-pill sk-purple">prompt-engineering</span>
+          </div>
+          <div class="prompt-box" id="p2">You are the Frontend Lib agent for SellerSaathi.
+
+            STEP 1 — Scan your available skills:
+            Read all relevant SKILL.md files — especially file-reading/SKILL.md. Check for any frontend or
+            TypeScript-related skills and read them.
+
+            STEP 2 — Read these files completely:
+            - agents/AGENT_FRONTEND_LIB.md
+            - ARCHITECTURE.md
+            - types/database.types.ts (already created by DB agent)
+
+            STEP 3 — Create ALL files in your ownership list:
+            hooks/, stores/, lib/utils/, types/ (non-DB types), i18n/
+
+            STEP 4 — Breaking changes to apply:
+            - next-intl v4.11.0: requestLocale is Promise — always await it
+            - zod v4.4.3: use z.email() / z.url() shorthands where applicable
+            - framer-motion v12: import from 'framer-motion' same as v11 ✓
+            - zustand v5: create() syntax same ✓
+
+            Rules:
+            - Import database types from types/database.types.ts (DB agent created this)
+            - All 8 language JSON files must have identical key structure
+            - Hooks are 'use client' only, no server-side code
+            - Do NOT create any file outside your ownership list.
+            <button class="copy-btn" onclick="copy('p2',this)">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-row">
+      <div class="step-line">
+        <div class="step-circle">3</div>
+        <div class="step-connector"></div>
+      </div>
+      <div class="step-body">
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-title">AGENT_AI & AGENT_PAYMENTS <span class="parallel-badge">Run in
+                Parallel</span></span>
+            <span class="step-file">independent agents</span>
+          </div>
+          <div class="depends-note">Both are standalone. No dependencies on each other. Run simultaneously.</div>
+
+          <div class="prompt-divider">AGENT_AI Prompt</div>
+          <div class="skills-row">
+            <span class="skill-pill sk-green">file-reading</span>
+            <span class="skill-pill sk-purple">prompt-engineering</span>
+            <span class="skill-pill sk-purple">ai-prompt-engineering-safety-review</span>
+          </div>
+          <div class="prompt-box" id="p3a">You are the AI agent for SellerSaathi.
+
+            STEP 1 — Scan your available skills:
+            Read ALL skill files related to: prompt-engineering, ai-prompt-engineering-safety-review, and file-reading.
+            Apply best practices from each skill when writing prompts.
+
+            STEP 2 — Read these files completely:
+            - agents/AGENT_AI.md
+            - ARCHITECTURE.md
+
+            STEP 3 — Create ALL files in your ownership list:
+            lib/ai/client.ts, lib/ai/utils.ts, lib/ai/prompts/listing.prompts.ts, lib/ai/prompts/poa.prompts.ts
+
+            STEP 4 — Key requirements:
+            - OpenAI SDK v6.37.0: NVIDIA-specific params go in extra_body, NOT top level
+            - Model: deepseek-ai/deepseek-v4-pro via NVIDIA API (OpenAI-compatible)
+            - Streaming must use ReadableStream with SSE format: data: {...}\n\n
+            - All prompts must output STRICT JSON — no markdown, no preamble
+            - Apply prompt-engineering best practices: clear role, format spec, examples, constraints
+            - Review all prompts using safety review principles
+
+            Do NOT touch any API routes — Backend agent handles those.
+            <button class="copy-btn" onclick="copy('p3a',this)">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="prompt-divider">AGENT_PAYMENTS Prompt</div>
+          <div class="skills-row">
+            <span class="skill-pill sk-green">file-reading</span>
+            <span class="skill-pill sk-amber">pricing-strategy</span>
+          </div>
+          <div class="prompt-box" id="p3b">You are the Payments agent for SellerSaathi.
+
+            STEP 1 — Scan your available skills:
+            Read file-reading/SKILL.md and pricing-strategy/SKILL.md. Apply pricing strategy best practices to the
+            credit pack pricing and plan structure.
+
+            STEP 2 — Read these files completely:
+            - agents/AGENT_PAYMENTS.md
+            - ARCHITECTURE.md
+
+            STEP 3 — Create ALL files in your ownership list:
+            lib/payments/razorpay.ts, app/api/payments/create-order/route.ts, app/api/payments/verify/route.ts,
+            app/api/payments/buy-credits/route.ts, app/api/payments/webhook/route.ts
+
+            STEP 4 — Key requirements:
+            - razorpay v2.9.6 — use exact API methods from AGENT_PAYMENTS.md
+            - Webhook route: SKIP auth middleware, verify Razorpay signature manually
+            - Use supabaseAdmin (service role) in webhook — never server client
+            - All amounts in paise (multiply INR × 100)
+            - verifyRazorpaySignature() must use crypto.createHmac
+            - Return consistent { data, error } shape from all routes
+
+            Do NOT touch lib/supabase/ — Backend agent owns those files.
+            <button class="copy-btn" onclick="copy('p3b',this)">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-row">
+      <div class="step-line">
+        <div class="step-circle">4</div>
+        <div class="step-connector"></div>
+      </div>
+      <div class="step-body">
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-title">AGENT_BACKEND — API Routes & Middleware</span>
+            <span class="step-file">agents/AGENT_BACKEND.md</span>
+          </div>
+          <div class="depends-note">Needs AI prompts + Payments lib to exist first. Calls their functions.</div>
+          <div class="skills-row">
+            <span class="skill-pill sk-green">file-reading</span>
+          </div>
+          <div class="prompt-box" id="p4">You are the Backend agent for SellerSaathi.
+
+            STEP 1 — Scan your available skills:
+            Read file-reading/SKILL.md and any backend/API related skills available to you.
+
+            STEP 2 — Read these files completely:
+            - agents/AGENT_BACKEND.md
+            - ARCHITECTURE.md
+
+            STEP 3 — Create ALL files in your ownership list:
+            middleware.ts, app/auth/callback/route.ts, app/api/ai/optimize-listing/route.ts,
+            app/api/ai/generate-poa/route.ts, lib/supabase/client.ts, lib/supabase/server.ts, lib/supabase/admin.ts
+
+            STEP 4 — Key requirements:
+            - @supabase/ssr latest — use createServerClient with cookies() from next/headers
+            - middleware.ts: protect /dashboard/* routes, redirect auth pages if logged in
+            - EXCLUDE /api/payments/webhook from middleware matcher (webhook has no session)
+            - AI routes: use ReadableStream + SSE streaming back to client
+            - Credit deduction: call supabase.rpc('get_credits_and_deduct') — atomic, race-condition safe
+            - On insufficient credits: return { error: 'insufficient_credits', code: 'CREDITS_DEPLETED' }
+            - zod v4.4.3 for all request body validation
+
+            Do NOT touch lib/ai/ or lib/payments/ — those are owned by other agents.
+            <button class="copy-btn" onclick="copy('p4',this)">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-row">
+      <div class="step-line">
+        <div class="step-circle">5</div>
+        <div class="step-connector"></div>
+      </div>
+      <div class="step-body">
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-title">AGENT_FRONTEND_COMPONENTS — UI Components</span>
+            <span class="step-file">agents/AGENT_FRONTEND_COMPONENTS.md</span>
+          </div>
+          <div class="depends-note">Needs LIB agent types + stores. Design-heavy — read all UI skills.</div>
+          <div class="skills-row">
+            <span class="skill-pill sk-blue">frontend-design</span>
+            <span class="skill-pill sk-blue">ui-ux-pro-max</span>
+            <span class="skill-pill sk-green">file-reading</span>
+          </div>
+          <div class="prompt-box" id="p5">You are the Frontend Components agent for SellerSaathi.
+
+            STEP 1 — Scan your available skills (CRITICAL — read ALL of these):
+            - Read frontend-design/SKILL.md completely
+            - Read ui-ux-pro-max/SKILL.md completely
+            - Read file-reading/SKILL.md
+            Apply every relevant guideline from these skills. This is a glassmorphism, Framer Motion, Poppins+Play
+            design system.
+
+            STEP 2 — Read these files completely:
+            - agents/AGENT_FRONTEND_COMPONENTS.md
+            - ARCHITECTURE.md
+
+            STEP 3 — Create ALL components in your ownership list under components/
+
+            STEP 4 — Design system to enforce strictly:
+            - Primary color: #059669 (emerald green) via CSS var --color-primary
+            - Fonts: Play (headings/logo) + Poppins (body/UI) — Google Fonts
+            - Glassmorphism: bg-[var(--color-bg-card)] backdrop-blur-md border border-[var(--color-border-glass)]
+            - Dark mode: every component works in both modes using CSS variables
+            - Framer Motion v12: use m.* with LazyMotion — import { m } from 'framer-motion'
+            - All interactive cards: whileHover={{ y:-2 }} whileTap={{ scale:0.98 }}
+            - Background orbs on layout wrappers (CSS only, no images)
+            - shadcn/ui for base primitives, extend with glass styling
+
+            STEP 5 — framer-motion v12 + zod v4 breaking changes:
+            - Use m.div instead of motion.div inside LazyMotion wrapper
+            - zod v4: use z.email() instead of z.string().email() in form schemas
+
+            Do NOT create pages or landing components — other agents own those.
+            <button class="copy-btn" onclick="copy('p5',this)">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-row">
+      <div class="step-line">
+        <div class="step-circle">6</div>
+        <div class="step-connector"></div>
+      </div>
+      <div class="step-body">
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-title">AGENT_LANDING — Animated Landing Page <span class="parallel-badge">Parallel with
+                step 7</span></span>
+            <span class="step-file">agents/AGENT_LANDING.md</span>
+          </div>
+          <div class="depends-note">Mostly standalone — has its own components/landing/ directory. Can run alongside
+            AGENT_FRONTEND_PAGES.</div>
+          <div class="skills-row">
+            <span class="skill-pill sk-blue">frontend-design</span>
+            <span class="skill-pill sk-blue">ui-ux-pro-max</span>
+            <span class="skill-pill sk-purple">video-prompting-guide</span>
+            <span class="skill-pill sk-green">file-reading</span>
+            <span class="skill-pill sk-amber">social-content</span>
+          </div>
+          <div class="prompt-box" id="p6">You are the Landing Page agent for SellerSaathi.
+
+            STEP 1 — Scan your available skills (CRITICAL — read ALL of these):
+            - Read frontend-design/SKILL.md completely
+            - Read ui-ux-pro-max/SKILL.md completely
+            - Read video-prompting-guide/SKILL.md (for animation descriptions and motion design)
+            - Read social-content/SKILL.md (for copywriting tone — Indian seller audience)
+            - Read file-reading/SKILL.md
+            Apply every relevant guideline. This page uses GSAP + Framer Motion + glassmorphism.
+
+            STEP 2 — Read these files completely:
+            - agents/AGENT_LANDING.md
+            - ARCHITECTURE.md
+
+            STEP 3 — Create ALL files in your ownership list:
+            app/(marketing)/page.tsx, app/(marketing)/layout.tsx, and ALL components/landing/ files
+
+            STEP 4 — Animation requirements (non-negotiable):
+            - GSAP preloader: logo SVG path draw (stroke-dasharray) → counter 0-100% → curtain split wipe
+            - gsap.registerPlugin(ScrollTrigger) at module level (not inside useEffect)
+            - Each section has its own ScrollTrigger animation as specified in AGENT_LANDING.md
+            - Hero: word-by-word stagger (GSAP), floating image drift (gsap infinite yoyo)
+            - framer-motion v12: use m.* components — import { m, LazyMotion, domAnimation } from 'framer-motion'
+
+            STEP 5 — Copy requirements:
+            - Headline: "Aapka AI-Powered Seller Companion" — split into word spans for GSAP stagger
+            - Use all 6 testimonials exactly as written in AGENT_LANDING.md
+            - Indian sellers tone: direct, benefit-first, mention cost savings vs agencies
+
+            STEP 6 — Asset placeholders:
+            For any image not yet available (hero-dashboard.png etc.), use styled placeholder divs with exact dimensions
+            noted — do NOT skip those sections.
+
+            Do NOT touch app/(dashboard)/ or any non-marketing files.
+            <button class="copy-btn" onclick="copy('p6',this)">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-row">
+      <div class="step-line">
+        <div class="step-circle">7</div>
+        <div class="step-connector"></div>
+      </div>
+      <div class="step-body">
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-title">AGENT_FRONTEND_PAGES — Pages & Layouts (Last)</span>
+            <span class="step-file">agents/AGENT_FRONTEND_PAGES.md</span>
+          </div>
+          <div class="depends-note">Must run last — assembles all components, hooks, and layouts together.</div>
+          <div class="skills-row">
+            <span class="skill-pill sk-blue">frontend-design</span>
+            <span class="skill-pill sk-blue">ui-ux-pro-max</span>
+            <span class="skill-pill sk-green">file-reading</span>
+          </div>
+          <div class="prompt-box" id="p7">You are the Frontend Pages agent for SellerSaathi.
+
+            STEP 1 — Scan your available skills (CRITICAL — read ALL of these):
+            - Read frontend-design/SKILL.md completely
+            - Read ui-ux-pro-max/SKILL.md completely
+            - Read file-reading/SKILL.md
+            Apply design system guidelines when building layouts and page structures.
+
+            STEP 2 — Read these files completely:
+            - agents/AGENT_FRONTEND_PAGES.md
+            - ARCHITECTURE.md
+
+            STEP 3 — Create ALL files in your ownership list:
+            app/globals.css, app/layout.tsx, app/providers.tsx, all page.tsx and layout.tsx files, next.config.ts,
+            tailwind.config.ts, components.json, package.json, public/manifest.json
+
+            STEP 4 — Critical setup:
+            - globals.css: write the COMPLETE CSS variable system for both light and dark mode as in
+            AGENT_FRONTEND_PAGES.md
+            - Root layout: ThemeProvider wrapping, next-intl v4 (NO messages prop on NextIntlClientProvider)
+            - Dashboard layout: LazyMotion wrapper for framer-motion v12 bundle optimization
+            - next.config.ts: include next-intl plugin + PWA plugin
+            - tsconfig.json paths: "@/*": ["./*"] — NOT "./src/*"
+            - tailwind.config.ts: darkMode: 'class', custom fontFamily Play + Poppins
+
+            STEP 5 — next-intl v4 breaking change (critical):
+            // WRONG: <NextIntlClientProvider messages={messages}>
+              // CORRECT: <NextIntlClientProvider> ← no messages prop in v4
+
+                STEP 6 — Page assembly rules:
+                - Dashboard pages: Server Components by default, fetch data server-side
+                - Interactive pages (new listing, new POA): 'use client'
+                - Import components from components/ — never recreate them here
+                - Import hooks from hooks/ — never inline hook logic in pages
+
+                Do NOT create landing page components — Landing agent owns those.
+                Do NOT create API routes — Backend and Payments agents own those.
+                <button class="copy-btn" onclick="copy('p7',this)">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+                  </svg>
+                </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function copy(id, btn) {
+      const box = document.getElementById(id);
+      // Get all text nodes within the prompt-box, excluding the button's text
+      let text = '';
+      for (let node of box.childNodes) {
+        if (node.nodeType === Node.TEXT_NODE) {
+          text += node.textContent;
+        } else if (node.nodeType === Node.ELEMENT_NODE && !node.classList.contains('copy-btn')) {
+          text += node.innerText || node.textContent;
+        }
+      }
+      text = text.trim();
+
+      navigator.clipboard.writeText(text).then(() => {
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Copied!';
+        btn.style.color = '#10b981';
+        btn.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+        setTimeout(() => {
+          btn.innerHTML = originalHTML;
+          btn.style.color = '';
+          btn.style.borderColor = '';
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+
+</html>

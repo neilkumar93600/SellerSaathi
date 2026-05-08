@@ -11,13 +11,14 @@ import {
   Mail,
 } from "lucide-react";
 import { siteConfig } from "@/config/site";
-import { authService as supabaseAuth } from "@/lib/supabase/services/auth";
-import { useAuthStore } from "@/lib/stores/auth-store";
-import { getSupabaseClient } from "@/lib/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
+import { useAuthStore } from "@/stores/auth.store";
+import { createClient } from "@/lib/supabase/client";
 
 type VerificationState = "verifying" | "success" | "expired" | "error" | "pending";
 
 export default function VerifyEmailPage() {
+  const { resetPassword } = useAuth();
   const { setUser } = useAuthStore();
   const [state, setState] = useState<VerificationState>("verifying");
   const [resending, setResending] = useState(false);
@@ -26,7 +27,7 @@ export default function VerifyEmailPage() {
 
   useEffect(() => {
     const check = async () => {
-      const supabase = getSupabaseClient();
+      const supabase = createClient();
       const {
         data: { session },
       } = await supabase.auth.getSession();
@@ -44,7 +45,7 @@ export default function VerifyEmailPage() {
     if (!userEmail) return;
     setResending(true);
     try {
-      await supabaseAuth.resetPassword(userEmail);
+      await resetPassword(userEmail);
       setResent(true);
     } catch (err) {
       console.error("Failed to resend:", err);

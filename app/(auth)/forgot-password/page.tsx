@@ -7,9 +7,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MessageCircle, ArrowLeft, Mail } from "lucide-react";
 import { siteConfig } from "@/config/site";
-import { authService as supabaseAuth } from "@/lib/supabase/services/auth";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function ForgotPasswordPage() {
+  const { resetPassword } = useAuth();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -30,10 +31,12 @@ export default function ForgotPasswordPage() {
 
     setLoading(true);
     try {
-      await supabaseAuth.resetPassword(email);
+      const { error: resetError } = await resetPassword(email);
+      if (resetError) throw resetError;
       setSuccess(true);
     } catch (err) {
       console.error("Forgot password error:", err);
+      // We still show success to avoid email enumeration
       setSuccess(true);
     } finally {
       setLoading(false);

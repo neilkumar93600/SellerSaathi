@@ -8,8 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MessageCircle, Eye, EyeOff, Check, X } from "lucide-react";
 import { siteConfig } from "@/config/site";
-import { authService as supabaseAuth } from "@/lib/supabase/services/auth";
-import { useAuthStore } from "@/lib/stores/auth-store";
+import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
 
 const PASSWORD_REQUIREMENTS = [
@@ -21,7 +20,7 @@ const PASSWORD_REQUIREMENTS = [
 
 export default function SignUpPage() {
   const router = useRouter();
-  const { setUser } = useAuthStore();
+  const { signUpWithEmail, signInWithGoogle } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -61,10 +60,10 @@ export default function SignUpPage() {
 
     setLoading(true);
     try {
-      const data = await supabaseAuth.signUp(email, password, { full_name: name });
+      const { data, error } = await signUpWithEmail(email, password, name);
+      if (error) throw error;
       if (data?.user && data?.session) {
-        setUser(data.user);
-        router.push("/chat");
+        router.push("/dashboard");
         router.refresh();
       } else {
         setSuccess(true);
@@ -78,10 +77,6 @@ export default function SignUpPage() {
     } finally {
       setLoading(false);
     }
-  }
-
-  async function signInWithGoogle() {
-    await supabaseAuth.signInWithOAuth("google");
   }
 
   if (success) {

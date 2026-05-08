@@ -6,7 +6,7 @@
 
 // ─── Primitive enums ─────────────────────────────────────────────────────────
 
-export type PlanId = 'free' | 'pro' | 'agency'
+export type PlanId = 'free' | 'growth' | 'pro' | 'agency'
 export type SubscriptionStatus = 'active' | 'cancelled' | 'past_due' | 'trialing'
 export type CreditTransactionType = 'purchase' | 'usage' | 'bonus' | 'monthly_reset' | 'refund'
 export type PlatformId = 'amazon_india' | 'flipkart'
@@ -17,7 +17,7 @@ export type PaymentStatus = 'pending' | 'captured' | 'failed' | 'refunded'
 
 // ─── Row types ────────────────────────────────────────────────────────────────
 
-export interface Profile {
+export type Profile = {
   id: string
   email: string
   full_name: string | null
@@ -30,7 +30,7 @@ export interface Profile {
   updated_at: string
 }
 
-export interface Plan {
+export type Plan = {
   id: PlanId
   display_name: string
   monthly_price_inr: number
@@ -39,7 +39,7 @@ export interface Plan {
   razorpay_plan_id: string | null
 }
 
-export interface PlanFeatures {
+export type PlanFeatures = {
   listing_optimizer: boolean
   poa_generator: boolean
   languages: string[]
@@ -51,7 +51,7 @@ export interface PlanFeatures {
   team_seats?: number
 }
 
-export interface Subscription {
+export type Subscription = {
   id: string
   user_id: string
   plan_id: PlanId
@@ -65,7 +65,7 @@ export interface Subscription {
   updated_at: string
 }
 
-export interface CreditTransaction {
+export type CreditTransaction = {
   id: string
   user_id: string
   amount: number
@@ -76,14 +76,14 @@ export interface CreditTransaction {
   created_at: string
 }
 
-export interface Platform {
+export type Platform = {
   id: PlatformId
   display_name: string
   base_url: string | null
   logo_url: string | null
 }
 
-export interface Category {
+export type Category = {
   id: string
   platform_id: PlatformId
   name: string
@@ -92,7 +92,7 @@ export interface Category {
   sort_order: number
 }
 
-export interface Listing {
+export type Listing = {
   id: string
   user_id: string
   platform_id: PlatformId
@@ -119,7 +119,7 @@ export interface Listing {
   updated_at: string
 }
 
-export interface PoaRequest {
+export type PoaRequest = {
   id: string
   user_id: string
   platform_id: PlatformId
@@ -136,7 +136,7 @@ export interface PoaRequest {
   updated_at: string
 }
 
-export interface Payment {
+export type Payment = {
   id: string
   user_id: string
   type: PaymentType
@@ -178,21 +178,14 @@ export type PlatformUpdate = Partial<Omit<Platform, 'id'>>
 export type CategoryInsert = Omit<Category, 'id'> & Partial<Pick<Category, 'sort_order' | 'parent_id'>>
 export type CategoryUpdate = Partial<Omit<Category, 'id'>>
 
-export type ListingInsert = Omit<Listing, 'id' | 'created_at' | 'updated_at'> &
-  Partial<Pick<Listing, 'status' | 'credits_used' | 'output_language' |
-    'input_bullets' | 'input_specs' | 'input_keywords' | 'category_id' |
-    'optimized_title' | 'optimized_description' | 'optimized_bullets' |
-    'optimized_backend_keywords' | 'seo_score_before' | 'seo_score_after' | 'error_message'>>
+export type ListingInsert = Omit<Listing, 'id' | 'created_at' | 'updated_at' | 'input_description' | 'input_bullets' | 'input_specs' | 'input_keywords' | 'optimized_title' | 'optimized_description' | 'optimized_bullets' | 'optimized_backend_keywords' | 'seo_score_before' | 'seo_score_after' | 'error_message'> & Partial<Pick<Listing, 'input_description' | 'input_bullets' | 'input_specs' | 'input_keywords' | 'optimized_title' | 'optimized_description' | 'optimized_bullets' | 'optimized_backend_keywords' | 'seo_score_before' | 'seo_score_after' | 'error_message'>>
 
 export type ListingUpdate = Partial<
   Pick<Listing, 'status' | 'optimized_title' | 'optimized_description' | 'optimized_bullets' |
     'optimized_backend_keywords' | 'seo_score_before' | 'seo_score_after' | 'error_message' |
     'credits_used' | 'category_id' | 'output_language'>>
 
-export type PoaRequestInsert = Omit<PoaRequest, 'id' | 'created_at' | 'updated_at'> &
-  Partial<Pick<PoaRequest, 'status' | 'credits_used' | 'poa_version' |
-    'asin_or_listing_id' | 'suspension_reason' | 'suspension_notice_text' |
-    'suspension_notice_url' | 'generated_poa' | 'error_message'>>
+export type PoaRequestInsert = Omit<PoaRequest, 'id' | 'created_at' | 'updated_at' | 'asin_or_listing_id' | 'suspension_reason' | 'suspension_notice_text' | 'suspension_notice_url' | 'generated_poa' | 'error_message' | 'poa_version'> & Partial<Pick<PoaRequest, 'asin_or_listing_id' | 'suspension_reason' | 'suspension_notice_text' | 'suspension_notice_url' | 'generated_poa' | 'error_message' | 'poa_version'>>
 
 export type PoaRequestUpdate = Partial<
   Pick<PoaRequest, 'status' | 'generated_poa' | 'poa_version' | 'error_message' |
@@ -207,13 +200,13 @@ export type PaymentUpdate = Partial<
 
 // ─── Function return types ────────────────────────────────────────────────────
 
-export interface GetCreditsAndDeductResult {
+export type GetCreditsAndDeductResult = {
   success: boolean
   credits_remaining: number
   error: string | null
 }
 
-export interface GetDashboardStatsResult {
+export type GetDashboardStatsResult = {
   total_listings: number
   total_poas: number
   credits_used_month: number
@@ -229,46 +222,55 @@ export type Database = {
         Row: Profile
         Insert: ProfileInsert
         Update: ProfileUpdate
+        Relationships: { foreignKeyName: string; columns: string[]; isOneToOne?: boolean; referencedRelation: string; referencedColumns: string[]; }[]
       }
       plans: {
         Row: Plan
         Insert: PlanInsert
         Update: PlanUpdate
+        Relationships: { foreignKeyName: string; columns: string[]; isOneToOne?: boolean; referencedRelation: string; referencedColumns: string[]; }[]
       }
       subscriptions: {
         Row: Subscription
         Insert: SubscriptionInsert
         Update: SubscriptionUpdate
+        Relationships: { foreignKeyName: string; columns: string[]; isOneToOne?: boolean; referencedRelation: string; referencedColumns: string[]; }[]
       }
       credit_transactions: {
         Row: CreditTransaction
         Insert: CreditTransactionInsert
         Update: Partial<CreditTransaction>
+        Relationships: { foreignKeyName: string; columns: string[]; isOneToOne?: boolean; referencedRelation: string; referencedColumns: string[]; }[]
       }
       platforms: {
         Row: Platform
         Insert: PlatformInsert
         Update: PlatformUpdate
+        Relationships: { foreignKeyName: string; columns: string[]; isOneToOne?: boolean; referencedRelation: string; referencedColumns: string[]; }[]
       }
       categories: {
         Row: Category
         Insert: CategoryInsert
         Update: CategoryUpdate
+        Relationships: { foreignKeyName: string; columns: string[]; isOneToOne?: boolean; referencedRelation: string; referencedColumns: string[]; }[]
       }
       listings: {
         Row: Listing
         Insert: ListingInsert
         Update: ListingUpdate
+        Relationships: { foreignKeyName: string; columns: string[]; isOneToOne?: boolean; referencedRelation: string; referencedColumns: string[]; }[]
       }
       poa_requests: {
         Row: PoaRequest
         Insert: PoaRequestInsert
         Update: PoaRequestUpdate
+        Relationships: { foreignKeyName: string; columns: string[]; isOneToOne?: boolean; referencedRelation: string; referencedColumns: string[]; }[]
       }
       payments: {
         Row: Payment
         Insert: PaymentInsert
         Update: PaymentUpdate
+        Relationships: { foreignKeyName: string; columns: string[]; isOneToOne?: boolean; referencedRelation: string; referencedColumns: string[]; }[]
       }
     }
     Views: Record<string, never>

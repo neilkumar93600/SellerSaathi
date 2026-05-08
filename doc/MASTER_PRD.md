@@ -59,13 +59,14 @@ SellerSaathi is an AI-powered web platform that replaces ₹5,000–15,000/month
 | Plan | Price | Credits | Features |
 |---|---|---|---|
 | Free | ₹0 | 3 credits lifetime | Listing optimizer only, English only, watermarked PDF |
-| Pro | ₹999/mo | 30 credits/mo | All features, all languages, clean PDF, priority AI |
-| Agency | ₹2,499/mo | 100 credits/mo | All Pro + bulk upload (CSV), API access (v2) |
+| Growth | ₹499/mo | 10 credits/mo | Listing optimizer, all languages, clean PDF, SEO score |
+| Pro | ₹1,499/mo | 50 credits/mo | All Growth + POA generator, priority support |
+| Agency | ₹4,999/mo | 200 credits/mo | All Pro + bulk upload (CSV), API access, 5 team seats |
 
 ### 4.2 Credit System
 - 1 listing optimization = 1 credit
 - 1 POA generation = 2 credits
-- Credits reset monthly on Pro/Agency
+- Credits reset monthly on paid plans (Growth/Pro/Agency)
 - Credits never expire on Free plan
 - Extra credits: ₹49/credit (one-time Razorpay purchase)
 

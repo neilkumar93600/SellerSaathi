@@ -15,8 +15,8 @@ import {
   EyeOff,
 } from "lucide-react";
 import { siteConfig } from "@/config/site";
-import { authService as supabaseAuth } from "@/lib/supabase/services/auth";
-import { getSupabaseClient } from "@/lib/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
+import { createClient } from "@/lib/supabase/client";
 
 const PASSWORD_REQUIREMENTS = [
   { label: "At least 8 characters", test: (p: string) => p.length >= 8 },
@@ -26,6 +26,7 @@ const PASSWORD_REQUIREMENTS = [
 ];
 
 export default function ResetPasswordPage() {
+  const { updatePassword } = useAuth();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -42,7 +43,7 @@ export default function ResetPasswordPage() {
 
   useEffect(() => {
     const check = async () => {
-      const supabase = getSupabaseClient();
+      const supabase = createClient();
       const {
         data: { session },
       } = await supabase.auth.getSession();
@@ -72,7 +73,8 @@ export default function ResetPasswordPage() {
 
     setLoading(true);
     try {
-      await supabaseAuth.updatePassword(password);
+      const { error: updateError } = await updatePassword(password);
+      if (updateError) throw updateError;
       setSuccess(true);
     } catch (err: unknown) {
       const msg =

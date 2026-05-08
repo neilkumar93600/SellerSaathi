@@ -8,9 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MessageCircle, Eye, EyeOff } from "lucide-react";
 import { siteConfig } from "@/config/site";
-import { authService as supabaseAuth } from "@/lib/supabase/services/auth";
-import { useAuthStore } from "@/lib/stores/auth-store";
-
+import { useAuth } from "@/hooks/use-auth";
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -20,7 +18,7 @@ function LoginForm() {
   // When callback redirects with error + message (e.g. "Database error saving new user"), show message as error
   const initialError = urlError && message ? message : urlError ?? null;
 
-  const { setUser } = useAuthStore();
+  const { signInWithEmail, signInWithGoogle } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -44,8 +42,8 @@ function LoginForm() {
 
     setLoading(true);
     try {
-      const data = await supabaseAuth.signIn(email, password);
-      if (data?.user) setUser(data.user);
+      const { error } = await signInWithEmail(email, password);
+      if (error) throw error;
       router.push(next);
       router.refresh();
     } catch (err: unknown) {
@@ -57,10 +55,6 @@ function LoginForm() {
     } finally {
       setLoading(false);
     }
-  }
-
-  async function signInWithGoogle() {
-    await supabaseAuth.signInWithOAuth("google");
   }
 
   return (

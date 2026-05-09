@@ -1,4 +1,4 @@
-﻿-- Migration 001: Enable extensions
+-- Migration 001: Enable extensions
 -- Run first â€” all other migrations depend on uuid generation
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   email               text        NOT NULL,
   full_name           text,
   avatar_url          text,
-  plan                text        NOT NULL DEFAULT 'free' CHECK (plan IN ('free', 'pro', 'agency')),
+  plan                text        NOT NULL DEFAULT 'free' CHECK (plan IN ('free', 'growth', 'pro', 'agency')),
   credits_remaining   integer     NOT NULL DEFAULT 3,
   language_preference text        NOT NULL DEFAULT 'en',
   primary_platform    text        NOT NULL DEFAULT 'amazon_india',
@@ -37,6 +37,7 @@ BEGIN
 END;
 $$;
 
+DROP TRIGGER IF EXISTS profiles_updated_at ON public.profiles;
 CREATE TRIGGER profiles_updated_at
   BEFORE UPDATE ON public.profiles
   FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
@@ -61,6 +62,7 @@ BEGIN
 END;
 $$;
 
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
@@ -99,6 +101,7 @@ CREATE TABLE IF NOT EXISTS public.subscriptions (
 CREATE INDEX IF NOT EXISTS subscriptions_user_id_idx ON public.subscriptions (user_id);
 CREATE INDEX IF NOT EXISTS subscriptions_razorpay_sub_id_idx ON public.subscriptions (razorpay_subscription_id);
 
+DROP TRIGGER IF EXISTS subscriptions_updated_at ON public.subscriptions;
 CREATE TRIGGER subscriptions_updated_at
   BEFORE UPDATE ON public.subscriptions
   FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
@@ -187,6 +190,7 @@ CREATE INDEX IF NOT EXISTS listings_user_id_idx    ON public.listings (user_id);
 CREATE INDEX IF NOT EXISTS listings_status_idx     ON public.listings (status);
 CREATE INDEX IF NOT EXISTS listings_created_at_idx ON public.listings (created_at DESC);
 
+DROP TRIGGER IF EXISTS listings_updated_at ON public.listings;
 CREATE TRIGGER listings_updated_at
   BEFORE UPDATE ON public.listings
   FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
@@ -222,6 +226,7 @@ CREATE INDEX IF NOT EXISTS poa_requests_user_id_idx    ON public.poa_requests (u
 CREATE INDEX IF NOT EXISTS poa_requests_status_idx     ON public.poa_requests (status);
 CREATE INDEX IF NOT EXISTS poa_requests_created_at_idx ON public.poa_requests (created_at DESC);
 
+DROP TRIGGER IF EXISTS poa_requests_updated_at ON public.poa_requests;
 CREATE TRIGGER poa_requests_updated_at
   BEFORE UPDATE ON public.poa_requests
   FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
@@ -261,11 +266,13 @@ CREATE INDEX IF NOT EXISTS payments_status_idx           ON public.payments (sta
 -- â”€â”€â”€ profiles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "profiles: user reads own row" ON public.profiles;
 CREATE POLICY "profiles: user reads own row"
   ON public.profiles FOR SELECT
   TO authenticated
   USING (auth.uid() = id);
 
+DROP POLICY IF EXISTS "profiles: user updates own row" ON public.profiles;
 CREATE POLICY "profiles: user updates own row"
   ON public.profiles FOR UPDATE
   TO authenticated
@@ -275,6 +282,7 @@ CREATE POLICY "profiles: user updates own row"
 -- â”€â”€â”€ plans â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 ALTER TABLE public.plans ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "plans: public read" ON public.plans;
 CREATE POLICY "plans: public read"
   ON public.plans FOR SELECT
   TO anon, authenticated
@@ -283,6 +291,7 @@ CREATE POLICY "plans: public read"
 -- â”€â”€â”€ subscriptions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 ALTER TABLE public.subscriptions ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "subscriptions: user reads own" ON public.subscriptions;
 CREATE POLICY "subscriptions: user reads own"
   ON public.subscriptions FOR SELECT
   TO authenticated
@@ -293,6 +302,7 @@ CREATE POLICY "subscriptions: user reads own"
 -- â”€â”€â”€ credit_transactions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 ALTER TABLE public.credit_transactions ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "credit_transactions: user reads own" ON public.credit_transactions;
 CREATE POLICY "credit_transactions: user reads own"
   ON public.credit_transactions FOR SELECT
   TO authenticated
@@ -303,6 +313,7 @@ CREATE POLICY "credit_transactions: user reads own"
 -- â”€â”€â”€ platforms â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 ALTER TABLE public.platforms ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "platforms: public read" ON public.platforms;
 CREATE POLICY "platforms: public read"
   ON public.platforms FOR SELECT
   TO anon, authenticated
@@ -311,6 +322,7 @@ CREATE POLICY "platforms: public read"
 -- â”€â”€â”€ categories â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 ALTER TABLE public.categories ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "categories: public read" ON public.categories;
 CREATE POLICY "categories: public read"
   ON public.categories FOR SELECT
   TO anon, authenticated
@@ -319,22 +331,26 @@ CREATE POLICY "categories: public read"
 -- â”€â”€â”€ listings â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 ALTER TABLE public.listings ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "listings: user selects own" ON public.listings;
 CREATE POLICY "listings: user selects own"
   ON public.listings FOR SELECT
   TO authenticated
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "listings: user inserts own" ON public.listings;
 CREATE POLICY "listings: user inserts own"
   ON public.listings FOR INSERT
   TO authenticated
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "listings: user updates own" ON public.listings;
 CREATE POLICY "listings: user updates own"
   ON public.listings FOR UPDATE
   TO authenticated
   USING (auth.uid() = user_id)
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "listings: user deletes own" ON public.listings;
 CREATE POLICY "listings: user deletes own"
   ON public.listings FOR DELETE
   TO authenticated
@@ -343,22 +359,26 @@ CREATE POLICY "listings: user deletes own"
 -- â”€â”€â”€ poa_requests â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 ALTER TABLE public.poa_requests ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "poa_requests: user selects own" ON public.poa_requests;
 CREATE POLICY "poa_requests: user selects own"
   ON public.poa_requests FOR SELECT
   TO authenticated
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "poa_requests: user inserts own" ON public.poa_requests;
 CREATE POLICY "poa_requests: user inserts own"
   ON public.poa_requests FOR INSERT
   TO authenticated
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "poa_requests: user updates own" ON public.poa_requests;
 CREATE POLICY "poa_requests: user updates own"
   ON public.poa_requests FOR UPDATE
   TO authenticated
   USING (auth.uid() = user_id)
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "poa_requests: user deletes own" ON public.poa_requests;
 CREATE POLICY "poa_requests: user deletes own"
   ON public.poa_requests FOR DELETE
   TO authenticated
@@ -367,6 +387,7 @@ CREATE POLICY "poa_requests: user deletes own"
 -- â”€â”€â”€ payments â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 ALTER TABLE public.payments ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "payments: user reads own" ON public.payments;
 CREATE POLICY "payments: user reads own"
   ON public.payments FOR SELECT
   TO authenticated

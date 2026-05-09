@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabase/admin'
+import { getSupabaseAdmin } from '@/lib/supabase/admin'
 import { verifyWebhookSignature, PLANS, type PlanKey } from '@/lib/payments/razorpay'
 import type { PlanId } from '@/types/database.types'
 
@@ -49,7 +49,7 @@ async function handlePaymentCaptured(payment: Record<string, unknown>) {
   const paymentId = payment.id as string | undefined
   if (!orderId || !paymentId) return
 
-  const { data: paymentRow } = await supabaseAdmin
+  const { data: paymentRow } = await getSupabaseAdmin()
     .from('payments')
     .select('id, user_id, type, credits_purchased, status')
     .eq('razorpay_order_id', orderId)
@@ -62,7 +62,7 @@ async function handlePaymentCaptured(payment: Record<string, unknown>) {
   const credits = paymentRow.credits_purchased ?? 0
   if (credits <= 0) return
 
-  const { data: profile } = await supabaseAdmin
+  const { data: profile } = await getSupabaseAdmin()
     .from('profiles')
     .select('credits_remaining')
     .eq('id', paymentRow.user_id)
@@ -70,12 +70,12 @@ async function handlePaymentCaptured(payment: Record<string, unknown>) {
 
   const newCredits = (profile?.credits_remaining ?? 0) + credits
 
-  await supabaseAdmin
+  await getSupabaseAdmin()
     .from('profiles')
     .update({ credits_remaining: newCredits })
     .eq('id', paymentRow.user_id)
 
-  await supabaseAdmin.from('credit_transactions').insert({
+  await getSupabaseAdmin().from('credit_transactions').insert({
     user_id: paymentRow.user_id,
     amount: credits,
     type: 'purchase',
@@ -84,7 +84,7 @@ async function handlePaymentCaptured(payment: Record<string, unknown>) {
     poa_id: null,
   })
 
-  await supabaseAdmin
+  await getSupabaseAdmin()
     .from('payments')
     .update({ status: 'captured', razorpay_payment_id: paymentId })
     .eq('id', paymentRow.id)
@@ -97,7 +97,7 @@ async function handleSubscriptionCharged(
   const subId = subscription.id as string | undefined
   if (!subId) return
 
-  const { data: subRow } = await supabaseAdmin
+  const { data: subRow } = await getSupabaseAdmin()
     .from('subscriptions')
     .select('id, user_id, plan_id')
     .eq('razorpay_subscription_id', subId)
@@ -113,7 +113,7 @@ async function handleSubscriptionCharged(
     ? new Date((subscription.current_end as number) * 1000).toISOString()
     : null
 
-  await supabaseAdmin
+  await getSupabaseAdmin()
     .from('subscriptions')
     .update({
       status: 'active',
@@ -123,7 +123,7 @@ async function handleSubscriptionCharged(
     .eq('id', subRow.id)
 
   // Reset monthly credits via RPC (handles both reset + transaction insert atomically)
-  await supabaseAdmin.rpc('reset_monthly_credits', {
+  await getSupabaseAdmin().rpc('reset_monthly_credits', {
     p_user_id: subRow.user_id,
     p_plan_id: planId,
   })
@@ -131,7 +131,7 @@ async function handleSubscriptionCharged(
   if (planId !== 'free') {
     const plan = PLANS[planId as PlanKey]
     if (plan) {
-      await supabaseAdmin.from('credit_transactions').insert({
+      await getSupabaseAdmin().from('credit_transactions').insert({
         user_id: subRow.user_id,
         amount: plan.credits,
         type: 'monthly_reset',
@@ -147,7 +147,7 @@ async function handleSubscriptionCancelled(subscription: Record<string, unknown>
   const subId = subscription.id as string | undefined
   if (!subId) return
 
-  await supabaseAdmin
+  await getSupabaseAdmin()
     .from('subscriptions')
     .update({ status: 'cancelled', cancel_at_period_end: true })
     .eq('razorpay_subscription_id', subId)
@@ -158,7 +158,7 @@ async function handleSubscriptionActivated(subscription: Record<string, unknown>
   if (!subId) return
 
   // Idempotent: verify endpoint usually handles this first
-  await supabaseAdmin
+  await getSupabaseAdmin()
     .from('subscriptions')
     .update({ status: 'active' })
     .eq('razorpay_subscription_id', subId)

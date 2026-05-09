@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
-import { supabaseAdmin } from '@/lib/supabase/admin'
-import { razorpay, getCreditPack } from '@/lib/payments/razorpay'
+import { getSupabaseAdmin } from '@/lib/supabase/admin'
+import { getRazorpay, getCreditPack } from '@/lib/payments/razorpay'
 
 const schema = z.object({
   credits: z.union([z.literal(5), z.literal(10), z.literal(25)]),
@@ -28,14 +28,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ data: null, error: 'Invalid credit pack' }, { status: 400 })
     }
 
-    const order = await razorpay.orders.create({
+    const order = await getRazorpay().orders.create({
       amount: pack.price_inr * 100,
       currency: 'INR',
       receipt: `credits_${user.id.slice(0, 8)}_${Date.now()}`,
       notes: { user_id: user.id, credits: String(pack.credits) },
     })
 
-    await supabaseAdmin.from('payments').insert({
+    await getSupabaseAdmin().from('payments').insert({
       user_id: user.id,
       type: 'credits',
       plan_id: null,

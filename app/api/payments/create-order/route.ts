@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
-import { supabaseAdmin } from '@/lib/supabase/admin'
-import { razorpay, PLANS, type PlanKey } from '@/lib/payments/razorpay'
+import { getSupabaseAdmin } from '@/lib/supabase/admin'
+import { getRazorpay, PLANS, type PlanKey } from '@/lib/payments/razorpay'
 
 const schema = z.object({
   plan_id: z.enum(['growth', 'pro', 'agency']),
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: existing } = await supabaseAdmin
+    const { data: existing } = await getSupabaseAdmin()
       .from('subscriptions')
       .select('id, status')
       .eq('user_id', user.id)
@@ -47,14 +47,14 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const subscription = await razorpay.subscriptions.create({
+    const subscription = await getRazorpay().subscriptions.create({
       plan_id: plan.razorpay_plan_id,
       customer_notify: 1,
       total_count: 12,
       notes: { user_id: user.id, plan_id },
     })
 
-    await supabaseAdmin.from('payments').insert({
+    await getSupabaseAdmin().from('payments').insert({
       user_id: user.id,
       type: 'subscription',
       plan_id,

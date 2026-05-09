@@ -2,10 +2,17 @@ import Razorpay from 'razorpay'
 import crypto from 'crypto'
 import type { PlanId } from '@/types/database.types'
 
-export const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID!,
-  key_secret: process.env.RAZORPAY_KEY_SECRET!,
-})
+let _razorpay: Razorpay | null = null
+
+export function getRazorpay(): Razorpay {
+  if (!_razorpay) {
+    _razorpay = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID!,
+      key_secret: process.env.RAZORPAY_KEY_SECRET!,
+    })
+  }
+  return _razorpay
+}
 
 export function verifyRazorpaySignature(params: {
   order_id: string

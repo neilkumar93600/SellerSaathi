@@ -12,7 +12,7 @@ import { useAuth } from "@/hooks/use-auth";
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") ?? "/chat";
+  const next = searchParams.get("next") ?? "/dashboard";
   const message = searchParams.get("message");
   const urlError = searchParams.get("error");
   // When callback redirects with error + message (e.g. "Database error saving new user"), show message as error

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
-import { supabaseAdmin } from '@/lib/supabase/admin'
+import { getSupabaseAdmin } from '@/lib/supabase/admin'
 import { verifyRazorpaySignature, PLANS, type PlanKey } from '@/lib/payments/razorpay'
 
 const schema = z.object({
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     const plan = PLANS[plan_id as PlanKey]
     const now = new Date().toISOString()
 
-    const { data: profile } = await supabaseAdmin
+    const { data: profile } = await getSupabaseAdmin()
       .from('profiles')
       .select('credits_remaining')
       .eq('id', user.id)
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
 
     const newCredits = (profile?.credits_remaining ?? 0) + plan.credits
 
-    await supabaseAdmin.from('subscriptions').upsert(
+    await getSupabaseAdmin().from('subscriptions').upsert(
       {
         user_id: user.id,
         plan_id,
@@ -64,12 +64,12 @@ export async function POST(request: NextRequest) {
       { onConflict: 'razorpay_subscription_id' }
     )
 
-    await supabaseAdmin
+    await getSupabaseAdmin()
       .from('profiles')
       .update({ plan: plan_id, credits_remaining: newCredits })
       .eq('id', user.id)
 
-    await supabaseAdmin.from('credit_transactions').insert({
+    await getSupabaseAdmin().from('credit_transactions').insert({
       user_id: user.id,
       amount: plan.credits,
       type: 'purchase',
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
       poa_id: null,
     })
 
-    await supabaseAdmin
+    await getSupabaseAdmin()
       .from('payments')
       .update({
         status: 'captured',

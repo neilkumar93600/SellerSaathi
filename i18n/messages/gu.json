@@ -1,0 +1,80 @@
+{
+  "nav": {
+    "dashboard": "ડૅશબોર્ડ",
+    "listings": "લિસ્ટિંગ",
+    "poa": "POA જનરેટર",
+    "billing": "બિલિંગ",
+    "settings": "સેટિંગ્સ",
+    "logout": "લૉગઆઉટ"
+  },
+  "dashboard": {
+    "title": "ડૅશબોર્ડ",
+    "welcome": "પાછા આવ્યા, {name}",
+    "credits": "{count} ક્રેડિટ્સ બાકી",
+    "quickActions": "ઝડપી ક્રિયાઓ",
+    "newListing": "નવી લિસ્ટિંગ",
+    "newPOA": "નવો POA",
+    "recentActivity": "તાજેતરની પ્રવૃત્તિ"
+  },
+  "listing": {
+    "title": "લિસ્ટિંગ ઑપ્ટિમાઇઝર",
+    "new": "નવી લિસ્ટિંગ",
+    "platform": "પ્લેટફોર્મ",
+    "category": "શ્રેણી",
+    "productTitle": "ઉત્પાદન શીર્ષક",
+    "description": "વર્ણન",
+    "bullets": "બુલેટ પૉઇન્ટ્સ",
+    "specs": "સ્પેસિફિકેશન",
+    "keywords": "લક્ષ્ય કીવર્ડ",
+    "outputLanguage": "આઉટપુટ ભાષા",
+    "optimize": "લિસ્ટિંગ ઑપ્ટિમાઇઝ કરો",
+    "optimizing": "ઑપ્ટિમાઇઝ થઈ રહ્યું છે...",
+    "seoScore": "SEO સ્કોર",
+    "before": "પહેલા",
+    "after": "પછી",
+    "copyAll": "બધું કૉપિ કરો",
+    "downloadPDF": "PDF ડાઉનલોડ કરો"
+  },
+  "poa": {
+    "title": "POA જનરેટર",
+    "new": "નવી POA વિનંતી",
+    "platform": "પ્લેટફોર્મ",
+    "asin": "ASIN / લિસ્ટિંગ ID",
+    "reason": "સસ્પેન્શનનું કારણ",
+    "notice": "સસ્પેન્શન નોટિસ",
+    "generate": "POA બનાવો",
+    "generating": "બનાવાઈ રહ્યું છે...",
+    "rootCause": "મૂળ કારણ",
+    "corrective": "સુધારાત્મક પગલાં",
+    "preventive": "નિવારક પગલાં",
+    "download": "POA ડાઉનલોડ કરો"
+  },
+  "billing": {
+    "title": "બિલિંગ & ક્રેડિટ્સ",
+    "currentPlan": "વર્તમાન પ્લાન",
+    "upgrade": "અપગ્રેડ કરો",
+    "buyCredits": "ક્રેડિટ્સ ખરીદો",
+    "credits": "ક્રેડિટ્સ",
+    "pricePerCredit": "દરેક ક્રેડિટ ₹49"
+  },
+  "plans": {
+    "free": "મફત",
+    "growth": "ગ્રોથ",
+    "pro": "પ્રો",
+    "agency": "એજન્સી"
+  },
+  "errors": {
+    "insufficientCredits": "પૂરતા ક્રેડિટ્સ નથી. વધુ ખરીદો અથવા તમારો પ્લાન અપગ્રેડ કરો.",
+    "unauthorized": "આગળ વધવા માટે લૉગિન કરો.",
+    "generic": "કંઈક ખોટું થયું. ફરી પ્રયાસ કરો."
+  },
+  "common": {
+    "save": "સ્ટોર કરો",
+    "cancel": "રદ કરો",
+    "copy": "કૉપિ કરો",
+    "copied": "કૉપિ થઈ ગઈ!",
+    "download": "ડાઉનલોડ",
+    "back": "પાછળ",
+    "loading": "લોડ થઈ રહ્યું છે..."
+  }
+}

@@ -1,34 +1,59 @@
-import { Geist, Geist_Mono, Figtree, Merriweather } from "next/font/google"
+import type { Metadata } from 'next'
+import { Play, Poppins } from 'next/font/google'
+import { ThemeProvider } from '@/components/theme-provider'
+import { NextIntlClientProvider } from 'next-intl'
+import { Providers } from '@/components/providers'
+import './globals.css'
 
-import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils";
-import { Providers } from "@/components/providers";
-
-const merriweatherHeading = Merriweather({subsets:['latin'],variable:'--font-heading'});
-
-const figtree = Figtree({subsets:['latin'],variable:'--font-sans'})
-
-const fontMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
+const play = Play({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'swap',
 })
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+const poppins = Poppins({
+  weight: ['300', '400', '500', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-body',
+  display: 'swap',
+})
+
+export const metadata: Metadata = {
+  title: {
+    default: 'SellerSaathi — AI Tools for Amazon India & Flipkart Sellers',
+    template: '%s | SellerSaathi',
+  },
+  description:
+    'AI-powered listing optimizer and POA generator for Amazon India and Flipkart sellers. Replace ₹10,000/month agencies.',
+  keywords: [
+    'amazon india listing optimizer',
+    'flipkart seller tools',
+    'seller saathi',
+    'amazon seo india',
+    'flipkart listing seo',
+  ],
+  openGraph: {
+    type: 'website',
+    locale: 'en_IN',
+    siteName: 'SellerSaathi',
+  },
+  manifest: '/manifest.json',
+}
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", figtree.variable, merriweatherHeading.variable)}
+      className={`${play.variable} ${poppins.variable}`}
     >
       <body>
-        <Providers>
-          <ThemeProvider>{children}</ThemeProvider>
-        </Providers>
+        <ThemeProvider>
+          <NextIntlClientProvider>
+            <Providers>{children}</Providers>
+          </NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

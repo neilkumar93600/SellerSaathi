@@ -1,0 +1,80 @@
+{
+  "nav": {
+    "dashboard": "ড্যাশবোর্ড",
+    "listings": "লিস্টিং",
+    "poa": "POA জেনারেটর",
+    "billing": "বিলিং",
+    "settings": "সেটিংস",
+    "logout": "লগআউট"
+  },
+  "dashboard": {
+    "title": "ড্যাশবোর্ড",
+    "welcome": "ফিরে আসুন, {name}",
+    "credits": "{count} ক্রেডিট বাকি",
+    "quickActions": "দ্রুত ক্রিয়া",
+    "newListing": "নতুন লিস্টিং",
+    "newPOA": "নতুন POA",
+    "recentActivity": "সাম্প্রতিক কার্যকলাপ"
+  },
+  "listing": {
+    "title": "লিস্টিং অপ্টিমাইজার",
+    "new": "নতুন লিস্টিং",
+    "platform": "প্ল্যাটফর্ম",
+    "category": "বিভাগ",
+    "productTitle": "পণ্যের শিরোনাম",
+    "description": "বিবরণ",
+    "bullets": "বুলেট পয়েন্ট",
+    "specs": "বৈশিষ্ট্যাবলী",
+    "keywords": "লক্ষ্য কীওয়ার্ড",
+    "outputLanguage": "আউটপুট ভাষা",
+    "optimize": "লিস্টিং অপ্টিমাইজ করুন",
+    "optimizing": "অপ্টিমাইজ হচ্ছে...",
+    "seoScore": "SEO স্কোর",
+    "before": "আগে",
+    "after": "পরে",
+    "copyAll": "সব কপি করুন",
+    "downloadPDF": "PDF ডাউনলোড করুন"
+  },
+  "poa": {
+    "title": "POA জেনারেটর",
+    "new": "নতুন POA অনুরোধ",
+    "platform": "প্ল্যাটফর্ম",
+    "asin": "ASIN / লিস্টিং ID",
+    "reason": "স্থগিতের কারণ",
+    "notice": "স্থগিতের নোটিশ",
+    "generate": "POA তৈরি করুন",
+    "generating": "তৈরি হচ্ছে...",
+    "rootCause": "মূল কারণ",
+    "corrective": "সংশোধনমূলক পদক্ষেপ",
+    "preventive": "প্রতিরোধমূলক পদক্ষেপ",
+    "download": "POA ডাউনলোড করুন"
+  },
+  "billing": {
+    "title": "বিলিং ও ক্রেডিট",
+    "currentPlan": "বর্তমান প্ল্যান",
+    "upgrade": "আপগ্রেড করুন",
+    "buyCredits": "ক্রেডিট কিনুন",
+    "credits": "ক্রেডিট",
+    "pricePerCredit": "প্রতি ক্রেডিট ₹49"
+  },
+  "plans": {
+    "free": "বিনামূল্যে",
+    "growth": "গ্রোথ",
+    "pro": "প্রো",
+    "agency": "এজেন্সি"
+  },
+  "errors": {
+    "insufficientCredits": "পর্যাপ্ত ক্রেডিট নেই। আরও কিনুন বা আপনার প্ল্যান আপগ্রেড করুন।",
+    "unauthorized": "চালিয়ে যেতে লগইন করুন।",
+    "generic": "কিছু একটা ভুল হয়েছে। আবার চেষ্টা করুন।"
+  },
+  "common": {
+    "save": "সংরক্ষণ করুন",
+    "cancel": "বাতিল করুন",
+    "copy": "কপি করুন",
+    "copied": "কপি হয়েছে!",
+    "download": "ডাউনলোড করুন",
+    "back": "ফিরে যান",
+    "loading": "লোড হচ্ছে..."
+  }
+}

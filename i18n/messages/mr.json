@@ -1,0 +1,80 @@
+{
+  "nav": {
+    "dashboard": "डॅशबोर्ड",
+    "listings": "लिस्टिंग",
+    "poa": "POA जनरेटर",
+    "billing": "बिलिंग",
+    "settings": "सेटिंग्ज",
+    "logout": "लॉगआउट"
+  },
+  "dashboard": {
+    "title": "डॅशबोर्ड",
+    "welcome": "परत स्वागत आहे, {name}",
+    "credits": "{count} क्रेडिट्स शिल्लक",
+    "quickActions": "त्वरित क्रिया",
+    "newListing": "नवीन लिस्टिंग",
+    "newPOA": "नवीन POA",
+    "recentActivity": "अलीकडील क्रियाकलाप"
+  },
+  "listing": {
+    "title": "लिस्टिंग ऑप्टिमायझर",
+    "new": "नवीन लिस्टिंग",
+    "platform": "प्लॅटफॉर्म",
+    "category": "श्रेणी",
+    "productTitle": "उत्पादन शीर्षक",
+    "description": "वर्णन",
+    "bullets": "बुलेट पॉईंट्स",
+    "specs": "वैशिष्ट्ये",
+    "keywords": "लक्ष्य कीवर्ड",
+    "outputLanguage": "आउटपुट भाषा",
+    "optimize": "लिस्टिंग ऑप्टिमाइझ करा",
+    "optimizing": "ऑप्टिमाइझ होत आहे...",
+    "seoScore": "SEO स्कोअर",
+    "before": "आधी",
+    "after": "नंतर",
+    "copyAll": "सर्व कॉपी करा",
+    "downloadPDF": "PDF डाउनलोड करा"
+  },
+  "poa": {
+    "title": "POA जनरेटर",
+    "new": "नवीन POA विनंती",
+    "platform": "प्लॅटफॉर्म",
+    "asin": "ASIN / लिस्टिंग ID",
+    "reason": "निलंबनाचे कारण",
+    "notice": "निलंबन नोटीस",
+    "generate": "POA तयार करा",
+    "generating": "तयार होत आहे...",
+    "rootCause": "मूळ कारण",
+    "corrective": "सुधारात्मक कृती",
+    "preventive": "प्रतिबंधात्मक कृती",
+    "download": "POA डाउनलोड करा"
+  },
+  "billing": {
+    "title": "बिलिंग आणि क्रेडिट्स",
+    "currentPlan": "सध्याची योजना",
+    "upgrade": "अपग्रेड करा",
+    "buyCredits": "क्रेडिट्स खरेदी करा",
+    "credits": "क्रेडिट्स",
+    "pricePerCredit": "प्रति क्रेडिट ₹49"
+  },
+  "plans": {
+    "free": "मोफत",
+    "growth": "ग्रोथ",
+    "pro": "प्रो",
+    "agency": "एजन्सी"
+  },
+  "errors": {
+    "insufficientCredits": "पुरेसे क्रेडिट्स नाहीत. अधिक खरेदी करा किंवा योजना अपग्रेड करा.",
+    "unauthorized": "सुरू ठेवण्यासाठी लॉगिन करा.",
+    "generic": "काहीतरी चुकले. पुन्हा प्रयत्न करा."
+  },
+  "common": {
+    "save": "जतन करा",
+    "cancel": "रद्द करा",
+    "copy": "कॉपी करा",
+    "copied": "कॉपी झाले!",
+    "download": "डाउनलोड",
+    "back": "मागे",
+    "loading": "लोड होत आहे..."
+  }
+}

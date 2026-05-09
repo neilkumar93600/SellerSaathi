@@ -1,5 +1,7 @@
+import type { PlatformId } from './database.types'
+
 export type ListingFormData = {
-  platform: 'amazon_india' | 'flipkart'
+  platform: PlatformId
   category_id: string
   input_title: string
   input_description: string

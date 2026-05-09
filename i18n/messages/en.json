@@ -1,0 +1,80 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "listings": "Listings",
+    "poa": "POA Generator",
+    "billing": "Billing",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back, {name}",
+    "credits": "{count} credits remaining",
+    "quickActions": "Quick Actions",
+    "newListing": "New Listing",
+    "newPOA": "New POA",
+    "recentActivity": "Recent Activity"
+  },
+  "listing": {
+    "title": "Listing Optimizer",
+    "new": "New Listing",
+    "platform": "Platform",
+    "category": "Category",
+    "productTitle": "Product Title",
+    "description": "Description",
+    "bullets": "Bullet Points",
+    "specs": "Specifications",
+    "keywords": "Target Keywords",
+    "outputLanguage": "Output Language",
+    "optimize": "Optimize Listing",
+    "optimizing": "Optimizing...",
+    "seoScore": "SEO Score",
+    "before": "Before",
+    "after": "After",
+    "copyAll": "Copy All",
+    "downloadPDF": "Download PDF"
+  },
+  "poa": {
+    "title": "POA Generator",
+    "new": "New POA Request",
+    "platform": "Platform",
+    "asin": "ASIN / Listing ID",
+    "reason": "Suspension Reason",
+    "notice": "Suspension Notice",
+    "generate": "Generate POA",
+    "generating": "Generating...",
+    "rootCause": "Root Cause",
+    "corrective": "Corrective Actions",
+    "preventive": "Preventive Actions",
+    "download": "Download POA"
+  },
+  "billing": {
+    "title": "Billing & Credits",
+    "currentPlan": "Current Plan",
+    "upgrade": "Upgrade",
+    "buyCredits": "Buy Credits",
+    "credits": "Credits",
+    "pricePerCredit": "₹49 per credit"
+  },
+  "plans": {
+    "free": "Free",
+    "growth": "Growth",
+    "pro": "Pro",
+    "agency": "Agency"
+  },
+  "errors": {
+    "insufficientCredits": "Not enough credits. Buy more or upgrade your plan.",
+    "unauthorized": "Please login to continue.",
+    "generic": "Something went wrong. Please try again."
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "download": "Download",
+    "back": "Back",
+    "loading": "Loading..."
+  }
+}

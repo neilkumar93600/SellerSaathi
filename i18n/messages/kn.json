@@ -1,0 +1,80 @@
+{
+  "nav": {
+    "dashboard": "ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+    "listings": "ಪಟ್ಟಿಗಳು",
+    "poa": "POA ಜನರೇಟರ್",
+    "billing": "ಬಿಲ್ಲಿಂಗ್",
+    "settings": "ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
+    "logout": "ಲಾಗ್‌ಔಟ್"
+  },
+  "dashboard": {
+    "title": "ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+    "welcome": "ಮತ್ತೆ ಸ್ವಾಗತ, {name}",
+    "credits": "{count} ಕ್ರೆಡಿಟ್‌ಗಳು ಉಳಿದಿವೆ",
+    "quickActions": "ತ್ವರಿತ ಕ್ರಿಯೆಗಳು",
+    "newListing": "ಹೊಸ ಪಟ್ಟಿ",
+    "newPOA": "ಹೊಸ POA",
+    "recentActivity": "ಇತ್ತೀಚಿನ ಚಟುವಟಿಕೆ"
+  },
+  "listing": {
+    "title": "ಪಟ್ಟಿ ಆಪ್ಟಿಮೈಜರ್",
+    "new": "ಹೊಸ ಪಟ್ಟಿ",
+    "platform": "ಪ್ಲಾಟ್‌ಫಾರ್ಮ್",
+    "category": "ವಿಭಾಗ",
+    "productTitle": "ಉತ್ಪನ್ನ ಶೀರ್ಷಿಕೆ",
+    "description": "ವಿವರಣೆ",
+    "bullets": "ಬುಲೆಟ್ ಪಾಯಿಂಟ್‌ಗಳು",
+    "specs": "ವಿಶೇಷಣಗಳು",
+    "keywords": "ಗುರಿ ಕೀವರ್ಡ್‌ಗಳು",
+    "outputLanguage": "ಔಟ್‌ಪುಟ್ ಭಾಷೆ",
+    "optimize": "ಪಟ್ಟಿಯನ್ನು ಆಪ್ಟಿಮೈಜ್ ಮಾಡಿ",
+    "optimizing": "ಆಪ್ಟಿಮೈಜ್ ಆಗುತ್ತಿದೆ...",
+    "seoScore": "SEO ಸ್ಕೋರ್",
+    "before": "ಮೊದಲು",
+    "after": "ನಂತರ",
+    "copyAll": "ಎಲ್ಲವನ್ನೂ ಕಾಪಿ ಮಾಡಿ",
+    "downloadPDF": "PDF ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ"
+  },
+  "poa": {
+    "title": "POA ಜನರೇಟರ್",
+    "new": "ಹೊಸ POA ವಿನಂತಿ",
+    "platform": "ಪ್ಲಾಟ್‌ಫಾರ್ಮ್",
+    "asin": "ASIN / ಪಟ್ಟಿ ID",
+    "reason": "ಅಮಾನತು ಕಾರಣ",
+    "notice": "ಅಮಾನತು ನೋಟೀಸ್",
+    "generate": "POA ರಚಿಸಿ",
+    "generating": "ರಚಿಸಲಾಗುತ್ತಿದೆ...",
+    "rootCause": "ಮೂಲ ಕಾರಣ",
+    "corrective": "ತಿದ್ದುಪಡಿ ಕ್ರಮಗಳು",
+    "preventive": "ತಡೆಗಟ್ಟುವ ಕ್ರಮಗಳು",
+    "download": "POA ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ"
+  },
+  "billing": {
+    "title": "ಬಿಲ್ಲಿಂಗ್ & ಕ್ರೆಡಿಟ್‌ಗಳು",
+    "currentPlan": "ಪ್ರಸ್ತುತ ಯೋಜನೆ",
+    "upgrade": "ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಿ",
+    "buyCredits": "ಕ್ರೆಡಿಟ್‌ಗಳನ್ನು ಖರೀದಿಸಿ",
+    "credits": "ಕ್ರೆಡಿಟ್‌ಗಳು",
+    "pricePerCredit": "ಪ್ರತಿ ಕ್ರೆಡಿಟ್‌ಗೆ ₹49"
+  },
+  "plans": {
+    "free": "ಉಚಿತ",
+    "growth": "ಬೆಳವಣಿಗೆ",
+    "pro": "ಪ್ರೊ",
+    "agency": "ಏಜೆನ್ಸಿ"
+  },
+  "errors": {
+    "insufficientCredits": "ಸಾಕಷ್ಟು ಕ್ರೆಡಿಟ್‌ಗಳಿಲ್ಲ. ಹೆಚ್ಚು ಖರೀದಿಸಿ ಅಥವಾ ನಿಮ್ಮ ಯೋಜನೆಯನ್ನು ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಿ.",
+    "unauthorized": "ಮುಂದುವರಿಯಲು ಲಾಗಿನ್ ಮಾಡಿ.",
+    "generic": "ಏನೋ ತಪ್ಪಾಯಿತು. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
+  },
+  "common": {
+    "save": "ಉಳಿಸಿ",
+    "cancel": "ರದ್ದುಮಾಡಿ",
+    "copy": "ಕಾಪಿ ಮಾಡಿ",
+    "copied": "ಕಾಪಿ ಆಯಿತು!",
+    "download": "ಡೌನ್‌ಲೋಡ್",
+    "back": "ಹಿಂದೆ",
+    "loading": "ಲೋಡ್ ಆಗುತ್ತಿದೆ..."
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "nav": {
+    "dashboard": "डैशबोर्ड",
+    "listings": "लिस्टिंग",
+    "poa": "POA जनरेटर",
+    "billing": "बिलिंग",
+    "settings": "सेटिंग्स",
+    "logout": "लॉगआउट"
+  },
+  "dashboard": {
+    "title": "डैशबोर्ड",
+    "welcome": "वापस आने पर स्वागत है, {name}",
+    "credits": "{count} क्रेडिट शेष",
+    "quickActions": "त्वरित क्रियाएं",
+    "newListing": "नई लिस्टिंग",
+    "newPOA": "नया POA",
+    "recentActivity": "हाल की गतिविधि"
+  },
+  "listing": {
+    "title": "लिस्टिंग ऑप्टिमाइज़र",
+    "new": "नई लिस्टिंग",
+    "platform": "प्लेटफ़ॉर्म",
+    "category": "श्रेणी",
+    "productTitle": "उत्पाद शीर्षक",
+    "description": "विवरण",
+    "bullets": "बुलेट पॉइंट",
+    "specs": "विशिष्टताएं",
+    "keywords": "लक्षित कीवर्ड",
+    "outputLanguage": "आउटपुट भाषा",
+    "optimize": "लिस्टिंग ऑप्टिमाइज़ करें",
+    "optimizing": "ऑप्टिमाइज़ हो रहा है...",
+    "seoScore": "SEO स्कोर",
+    "before": "पहले",
+    "after": "बाद",
+    "copyAll": "सब कॉपी करें",
+    "downloadPDF": "PDF डाउनलोड करें"
+  },
+  "poa": {
+    "title": "POA जनरेटर",
+    "new": "नया POA अनुरोध",
+    "platform": "प्लेटफ़ॉर्म",
+    "asin": "ASIN / लिस्टिंग ID",
+    "reason": "निलंबन का कारण",
+    "notice": "निलंबन नोटिस",
+    "generate": "POA जनरेट करें",
+    "generating": "जनरेट हो रहा है...",
+    "rootCause": "मूल कारण",
+    "corrective": "सुधारात्मक कार्रवाई",
+    "preventive": "निवारक कार्रवाई",
+    "download": "POA डाउनलोड करें"
+  },
+  "billing": {
+    "title": "बिलिंग और क्रेडिट",
+    "currentPlan": "वर्तमान प्लान",
+    "upgrade": "अपग्रेड करें",
+    "buyCredits": "क्रेडिट खरीदें",
+    "credits": "क्रेडिट",
+    "pricePerCredit": "₹49 प्रति क्रेडिट"
+  },
+  "plans": {
+    "free": "निःशुल्क",
+    "growth": "ग्रोथ",
+    "pro": "प्रो",
+    "agency": "एजेंसी"
+  },
+  "errors": {
+    "insufficientCredits": "पर्याप्त क्रेडिट नहीं हैं। अधिक खरीदें या अपना प्लान अपग्रेड करें।",
+    "unauthorized": "कृपया जारी रखने के लिए लॉगिन करें।",
+    "generic": "कुछ गलत हो गया। कृपया फिर कोशिश करें।"
+  },
+  "common": {
+    "save": "सहेजें",
+    "cancel": "रद्द करें",
+    "copy": "कॉपी करें",
+    "copied": "कॉपी हो गया!",
+    "download": "डाउनलोड करें",
+    "back": "वापस",
+    "loading": "लोड हो रहा है..."
+  }
+}

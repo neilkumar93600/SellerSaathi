@@ -1,5 +1,7 @@
+import type { PlatformId } from './database.types'
+
 export type POAFormData = {
-  platform: 'amazon_india' | 'flipkart'
+  platform: PlatformId
   asin_or_listing_id: string
   suspension_reason: string
   suspension_notice_text: string

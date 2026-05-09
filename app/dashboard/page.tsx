@@ -1,58 +1,105 @@
-"use client";
+'use client'
 
-import { useAuth } from "@/hooks/use-auth";
-import { Button } from "@/components/ui/button";
-import { LogOut, User } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useCredits } from "@/hooks/use-credits";
+import { useAuth } from '@/hooks/use-auth'
+import { useCredits } from '@/hooks/use-credits'
+import { StatsCard } from '@/components/dashboard/StatsCard'
+import { CreditMeter } from '@/components/dashboard/CreditMeter'
+import { QuickActions } from '@/components/dashboard/QuickActions'
+import { ActivityFeed } from '@/components/dashboard/ActivityFeed'
+import { Skeleton } from '@/components/ui/skeleton'
+import { ListChecks, FileText, Coins, BadgeCheck } from 'lucide-react'
+import { useListings } from '@/hooks/use-listing'
+import { usePOAs } from '@/hooks/use-poa'
+import type { ActivityItem } from '@/components/dashboard/ActivityFeed'
 
 export default function DashboardPage() {
-  const { user, profile, signOut } = useAuth();
-  const { credits, plan } = useCredits();
+  const { user, profile } = useAuth()
+  const { credits, plan } = useCredits()
+  const { listings, isLoading: listingsLoading } = useListings()
+  const { poas, isLoading: poasLoading } = usePOAs()
 
-  if (!user) return null;
+  if (!user) return null
+
+  const creditsTotal =
+    plan === 'agency' ? 500 : plan === 'pro' ? 150 : plan === 'growth' ? 50 : 10
+  const creditsUsed = creditsTotal - credits
+
+  const activities: ActivityItem[] = [
+    ...(listings ?? []).slice(0, 5).map((l) => ({
+      id: l.id,
+      type: 'listing' as const,
+      title: l.input_title ?? 'Untitled listing',
+      date: l.created_at,
+      status: l.status,
+      href: `/dashboard/listings/${l.id}`,
+    })),
+    ...(poas ?? []).slice(0, 5).map((p) => ({
+      id: p.id,
+      type: 'poa' as const,
+      title: p.asin_or_listing_id ?? 'POA request',
+      date: p.created_at,
+      status: p.status,
+      href: `/dashboard/poa/${p.id}`,
+    })),
+  ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+
+  const isLoading = listingsLoading || poasLoading
 
   return (
-    <div className="container mx-auto p-8 max-w-5xl space-y-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground mt-2">
-            Welcome back, {profile?.full_name || user.email}
-          </p>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
+        <p className="text-sm text-muted-foreground mt-1">
+          Welcome back, {profile?.full_name ?? user.email}
+        </p>
+      </div>
+
+      {isLoading ? (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton key={i} className="h-28 rounded-2xl" />
+          ))}
         </div>
-        <Button variant="outline" onClick={signOut}>
-          <LogOut className="size-4 mr-2" />
-          Sign out
-        </Button>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <StatsCard
+            title="Credits remaining"
+            value={credits}
+            icon={Coins}
+            description={`${plan.toUpperCase()} plan`}
+          />
+          <StatsCard
+            title="Listings created"
+            value={listings?.length ?? 0}
+            icon={ListChecks}
+          />
+          <StatsCard
+            title="POAs generated"
+            value={poas?.length ?? 0}
+            icon={FileText}
+          />
+          <StatsCard
+            title="Plan"
+            value={plan.charAt(0).toUpperCase() + plan.slice(1)}
+            icon={BadgeCheck}
+          />
+        </div>
+      )}
+
+      <div className="grid gap-6 lg:grid-cols-3">
+        <CreditMeter
+          used={creditsUsed}
+          total={creditsTotal}
+          plan={plan}
+          className="lg:col-span-1"
+        />
+        <QuickActions className="lg:col-span-2" />
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Available Credits</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{credits}</div>
-            <p className="text-xs text-muted-foreground">
-              Current Plan: {plan.toUpperCase()}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Account Status</CardTitle>
-            <User className="size-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">Active</div>
-            <p className="text-xs text-muted-foreground">
-              {user.email}
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+      <ActivityFeed
+        activities={activities}
+        emptyHref="/dashboard/listings/new"
+      />
     </div>
-  );
+  )
 }

@@ -197,6 +197,8 @@ CREATE TRIGGER listings_updated_at
 
 -- Now that listings exists, add the FK from credit_transactions
 ALTER TABLE public.credit_transactions
+  DROP CONSTRAINT IF EXISTS credit_transactions_listing_id_fkey;
+ALTER TABLE public.credit_transactions
   ADD CONSTRAINT credit_transactions_listing_id_fkey
   FOREIGN KEY (listing_id) REFERENCES public.listings(id) ON DELETE SET NULL;
 
@@ -232,6 +234,8 @@ CREATE TRIGGER poa_requests_updated_at
   FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
 
 -- Now that poa_requests exists, add the FK from credit_transactions
+ALTER TABLE public.credit_transactions
+  DROP CONSTRAINT IF EXISTS credit_transactions_poa_id_fkey;
 ALTER TABLE public.credit_transactions
   ADD CONSTRAINT credit_transactions_poa_id_fkey
   FOREIGN KEY (poa_id) REFERENCES public.poa_requests(id) ON DELETE SET NULL;
